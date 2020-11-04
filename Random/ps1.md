@@ -1,0 +1,369 @@
+Problem Set 1
+================
+Alex, Daniel and Micah
+8/27/2019
+
+# Potential Outcomes Notation
+
+1.  Explain the notation \(Y_i(1)\).  
+    **Answer:** This notation indicates the potential treatment 1 for i
+    treatment groups.  
+2.  Explain the notation \(Y_1(1)\).  
+    **Answer:** This notation indicates the potential treatment 1 for
+    group 1 of i.
+3.  Explain the notation \(E[Y_i(1)|d_i=0]\).  
+    **Answer:** This notation means the expectation of Y\_i(1) when one
+    group is selected randomly from those groups which were not
+    treated.  
+4.  Explain the difference between the notation \(E[Y_i(1)]\) and
+    \(E[Y_i(1)|d_i=1]\).  
+    **Answer:** E\[Y\_i(1)\] means when one subject from the treatement
+    group is selected at random. E\[Y\_i(1)|d\_i=1\] is when one treated
+    subject from the treatement group is selected at random. The former
+    group may select a subject in the treatment group which was not
+    treated.
+
+# Potential Outcomes and Treatment Effects
+
+1.  Use the values in the table below to illustrate that
+    \(E[Y_i(1)]-E[Y_i(0)] = E[Y_i(1)- [Y_i(0)]\).  
+    **Answer:** Expected values still follow the associative property.
+
+<!-- end list -->
+
+``` r
+y_0_ex <- c(10, 12, 15, 11, 10, 17, 16)
+y_1_ex <- c(12, 12, 18, 14, 15, 18, 16)
+tau_ex <- c(2, 0, 3, 3, 5, 1, 0)
+tau.mean <- mean(tau_ex)
+y_0_ex.mean <- mean(y_0_ex)
+y_1_ex.mean <- mean(y_1_ex)
+y.diff <- y_1_ex.mean - y_0_ex.mean
+```
+
+``` r
+cat("E[Y_i(1)- [Y_i(0)] = ",tau.mean)
+```
+
+    ## E[Y_i(1)- [Y_i(0)] =  2
+
+``` r
+cat("E[Y_i(1)]-E[Y_i(0)] = ",y.diff )
+```
+
+    ## E[Y_i(1)]-E[Y_i(0)] =  2
+
+2.  Is it possible to collect all necessary values and construct a table
+    like the one below in real life? Explain why or why not.  
+    **Answer:** No, it is not possible to construct a table like the
+    below. In the table below each subject is receiving both the
+    treatment and the control conditions. This is not how a real field
+    experiment’s data would look.
+
+<!-- end list -->
+
+``` r
+kable(table)
+```
+
+| subject | y\_0 | y\_1 | tau |
+| ------: | ---: | ---: | --: |
+|       1 |   10 |   12 |   2 |
+|       2 |   12 |   12 |   0 |
+|       3 |   15 |   18 |   3 |
+|       4 |   11 |   14 |   3 |
+|       5 |   10 |   15 |   5 |
+|       6 |   17 |   18 |   1 |
+|       7 |   16 |   16 |   0 |
+
+# Visual Acuity
+
+Suppose we are interested in the hypothesis that children playing
+outside leads them to have better eyesight.
+
+Consider the following population of ten representative children whose
+visual acuity we can measure. (Visual acuity is the decimal version of
+the fraction given as output in standard eye exams. Someone with 20/20
+vision has acuity 1.0, while someone with 20/40 vision has acuity 0.5.
+Numbers greater than 1.0 are possible for people with better than
+“normal” visual acuity.)
+
+``` r
+kable(d)
+```
+
+| child | y\_0 | y\_1 |
+| ----: | ---: | ---: |
+|     1 |  1.2 |  1.2 |
+|     2 |  0.1 |  0.7 |
+|     3 |  0.5 |  0.5 |
+|     4 |  0.8 |  0.8 |
+|     5 |  1.5 |  0.6 |
+|     6 |  2.0 |  2.0 |
+|     7 |  1.3 |  1.3 |
+|     8 |  0.7 |  0.7 |
+|     9 |  1.1 |  1.1 |
+|    10 |  1.4 |  1.4 |
+
+In this table, `y_1` means means the measured *visual acuity* if the
+child were to play outside at least 10 hours per week from ages 3 to 6.
+`y_0` means the measured *visual acuity* if the child were to play
+outside fewer than 10 hours per week from age 3 to age 6. Both of these
+potential outcomes *at the child level* would be measured at the same
+time, when the child is 6.
+
+1.  Compute the individual treatment effect for each of the ten
+    children.  
+    **Answer:**.
+
+<!-- end list -->
+
+``` r
+y_0 <- c(1.2, 0.1, 0.5, 0.8, 1.5, 2.0, 1.3, 0.7, 1.1, 1.4)
+y_1 <- c(1.2, 0.7, 0.5, 0.8, 0.6, 2.0, 1.3, 0.7, 1.1, 1.4)
+tau <- y_1 - y_0
+
+a1 <- data.table(
+  child = 1:10, 
+  y_0,
+  y_1,
+  tau
+)
+```
+
+``` r
+kable(a1)
+```
+
+| child | y\_0 | y\_1 |   tau |
+| ----: | ---: | ---: | ----: |
+|     1 |  1.2 |  1.2 |   0.0 |
+|     2 |  0.1 |  0.7 |   0.6 |
+|     3 |  0.5 |  0.5 |   0.0 |
+|     4 |  0.8 |  0.8 |   0.0 |
+|     5 |  1.5 |  0.6 | \-0.9 |
+|     6 |  2.0 |  2.0 |   0.0 |
+|     7 |  1.3 |  1.3 |   0.0 |
+|     8 |  0.7 |  0.7 |   0.0 |
+|     9 |  1.1 |  1.1 |   0.0 |
+|    10 |  1.4 |  1.4 |   0.0 |
+
+2.  Tell a “story” that could explain this distribution of treatment
+    effects. In particular, discuss what might cause some children to
+    have different treatment effects than others.  
+    **Answer:** Assuming there is a normal distribution it makes sense
+    that there is some variation within a sample. However, to tell a
+    “story” we can assume that a child with a decrease in *visual
+    accuity* may have a genetic predisposition to poor eyesight. Often
+    eyesight changes with age. This could be a larger influence than
+    playing outside. In the case of a child with increased *visual
+    acuity* perhaps the measurement of original *visual acuity* has an
+    error. This is common within experimentation as accuracy cannot be
+    guaranteed with measuring devices. For instance, a child given a
+    standard vision test may be able to guess some answers correctly
+    when believing they will be praised or rewarded for doing well.
+
+3.  For this population, what is the true average treatment effect (ATE)
+    of playing outside.
+
+<!-- end list -->
+
+``` r
+tau.mean <- mean(tau)
+
+print(tau.mean)
+```
+
+    ## [1] -0.03
+
+4.  Suppose we are able to do an experiment in which we can control the
+    amount of time that these children play outside for three years. We
+    happen to randomly assign the odd-numbered children to treatment and
+    the even-numbered children to control. What is the estimate of the
+    ATE you would reach under this assignment? (Please describe your
+    work.)  
+    **Answer:** Sorry running out of time to complete otherwise I would
+    have run loops and use modulo to select the correct position into a
+    new list.
+
+First, the control group will only get readings on even numbered
+children and the treatment group will only have readings on the odd
+numbers. We can use the associative properties from the previous
+question to calculate the mean on each group separately and find the
+different tau for the whole.
+
+``` r
+y_0_even <- c(NULL, 0.1, NULL, 0.8, NULL, 2.0, NULL, 0.7, NULL, 1.4)
+y_1_odd <- c(1.2, NULL, 0.5, NULL, 0.6, NULL, 1.3, NULL, 1.1, NULL)
+
+y_0_even.mean <- mean(y_0_even)
+y_1_odd.mean <- mean(y_1_odd)
+tau.4 <- y_1_odd.mean - y_0_even.mean
+
+print(tau.4)
+```
+
+    ## [1] -0.06
+
+5.  How different is the estimate from the truth? Intuitively, why is
+    there a difference?  
+    **Answer:** The estimate is likely -0.03 away from the truth.
+    Intuitively the difference exists because of sample size where
+    simple randomization caused error.  
+6.  We just considered one way (odd-even) an experiment might split the
+    children. How many different ways (every possible ways) are there to
+    split the children into a treatment versus a control group (assuming
+    at least one person is always in the treatment group and at least
+    one person is always in the control group)?  
+    **Answer:** This method assumes we are randomly assigning to one
+    group and the remainder go to the other group. Technically I could
+    divide this by 2 as the children would be randomly sorted the same.
+
+<!-- end list -->
+
+``` r
+answer <-{
+  factorial(10)/(factorial(1)*factorial(9)) + 
+    factorial(10)/(factorial(2)*factorial(8)) +
+    factorial(10)/(factorial(3)*factorial(7)) +
+    factorial(10)/(factorial(4)*factorial(6)) +
+    factorial(10)/(factorial(5)*factorial(5)) +
+    factorial(10)/(factorial(6)*factorial(4)) +
+    factorial(10)/(factorial(7)*factorial(3)) +
+    factorial(10)/(factorial(8)*factorial(2)) +
+    factorial(10)/(factorial(9)*factorial(1)) 
+}
+
+print(answer)
+```
+
+    ## [1] 1022
+
+7.  Suppose that we decide it is too hard to control the behavior of the
+    children, so we do an observational study instead. Children 1-5
+    choose to play an average of more than 10 hours per week from age 3
+    to age 6, while Children 6-10 play less than 10 hours per week.
+    Compute the difference in means from the resulting observational
+    data.  
+    **Answer:**
+
+<!-- end list -->
+
+``` r
+y_0_h1 <- c(NULL, NULL, NULL, NULL, NULL, 2.0, 1.3, 0.7, 1.1, 1.4)
+y_1_h2 <- c(1.2, 0.7, 0.5, 0.8, 0.6, NULL, NULL, NULL, NULL, NULL)
+
+y_0_h1.mean <- mean(y_0_h1)
+y_1_h2.mean <- mean(y_1_h2)
+tau.7 <- y_1_h2.mean - y_0_h1.mean
+
+print(y_0_h1.mean)
+```
+
+    ## [1] 1.3
+
+``` r
+print(y_1_h2.mean)
+```
+
+    ## [1] 0.76
+
+``` r
+print(tau.7)
+```
+
+    ## [1] -0.54
+
+8.  Compare your answer in (g) to the true ATE. Intuitively, what causes
+    the difference?  
+    **Answer:** The answer this time is -0.51 (-0.51) away from the true
+    ATE. Again, sample size is causing the issue. Randomization is meant
+    to equalize these effects, but with a sample size of n = 10 the
+    variability is going to be large.
+
+# Randomization and Experiments
+
+1.  Assume that researcher takes a random sample of elementary school
+    children and compare the grades of those who were previously
+    enrolled in an early childhood education program with the grades of
+    those who were not enrolled in such a program. Is this an experiment
+    or an observational study? Explain\!  
+    **Answer:** This is an observational study. This could have been an
+    experiment if a group of children were randomly assigned to take
+    early childhood education or not. In the case described the
+    randomization is within the population that was already presorted
+    into two categories in a non-random fashion.  
+2.  Assume that the researcher works together with an organization that
+    provides early childhood education and offer free programs to
+    certain children. However, which children that received this offer
+    was not randomly selected by the researcher but rather chosen by the
+    local government. (Assume that the government did not use random
+    assignment but instead gives the offer to students who are deemed to
+    need it the most) The research follows up a couple of years later by
+    comparing the elementary school grades of students offered free
+    early childhood education to those who were not. Is this an
+    experiment or an observational study? Explain\!  
+    **Answer:** as above this method is not an experiment. The
+    assignment was not done randomly, but with a bias to those that are
+    *deemed to need it the most*. This segmentation of the population
+    may have significant biases.  
+3.  Does your answer to part (2) change if we instead assume that the
+    government assigned students to treatment and control by “coin toss”
+    for each student?  
+    **Answer:** Yes, this would essentially create a natural experiment.
+    We can equate the *coin toss* to a lottery system. Factors like
+    parental interest, race, ethnicity, economic status should be
+    equally distributed based on the random assignment between treatment
+    and control.
+
+# Moral Panic
+
+Suppose that a researcher finds that high school students who listen to
+death metal music at least once per week are more likely to perform
+badly on standardized test. As a consequence, the researcher writes an
+opinion piece in which she recommends parents to keep their kids away
+from “dangerous, satanic music”. Let \(Y_i(0)\) be each student’s test
+score when listening to death metal at least one time per week. Let
+\(Y_i(1)\) be the test score when listening to death metal less than one
+time per week.
+
+1.  Explain the statement \(E[Y_i(0)|D_i=0] = E[Y_i(0)|D_i=1]\) in
+    words. First, state the rote english language translation; but then,
+    second, tell us the *meaning* of this statement.  
+    **Answer:** The statement \(E[Y_i(0)|D_i=0] = E[Y_i(0)|D_i=1]\) can
+    be translated to the expected outcome of students’ test scores when
+    listening to death metal at least once per week and is not treated
+    is equal to the expected outcome of students’ test scores when
+    listening to death metal at least once per week and is treated.  
+    The meaning of this is that students in the control group (listens
+    to death metal once per week) have the same expected outcome whether
+    they receive the treatment (listening to death metal less than once
+    per week) or not.  
+2.  Do you expect the above condition to hold in this case? Explain why
+    or why not.  
+    **Answer:** Yes, I expect the above condition to hold in this case.
+    It’s highly unlikely that listening to death metal has a
+    statistically significant causal relation to standardized test
+    scores. More likely, is that this was a proxy variable for other
+    confounding factors like economic status or academic interest.
+
+# MIDS Admission
+
+Suppose a researcher at UC Berkeley wants to test the effect of taking
+the MIDS program on future wages. The researcher convinces the School of
+Information to make admission into the MIDS program random among those
+who apply. The idea is that since admission is random, it is now
+possible to later obtain an unbiased estimate of the effect by comparing
+wages of those who where admitted to a random sample of people who did
+not take the MIDS program. Do you believe this experimental design would
+give you an unbiased estimate? Explain why or why not. Assume that
+everybody who gets offer takes it and that prospective students do not
+know admission is random.  
+**Answer:** It is not possible to obtain an unbiased estimate of the
+effect by comparing wages of those were admitted to those who were not
+admitted. In this experimental design those excluded from admission do
+not know admission was made randomly. This information being kept secret
+may then depress the wages of rejected candidates. They may take that as
+a market signal to not pursue opportunities which they otherwise would
+have. In this scenario the experimental design may actually widen the
+gap and increase the wage disparity of future earnings.
